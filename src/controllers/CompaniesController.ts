@@ -1,0 +1,18 @@
+import express from 'express'
+const router = express.Router()
+const knex = require('../database')
+
+router.get('/companies', async (req, res) => {
+    const result = await knex('companies')
+
+    return res.json(result)
+})
+
+router.get('/companie/:id', async (req, res) => {
+    let id = req.params.id
+    const result = await knex('companies').where({ 'id': id }).first()
+
+    return res.json(result)
+})
+
+export default router
