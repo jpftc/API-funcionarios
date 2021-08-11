@@ -3,6 +3,8 @@ const app = express()
 
 import routes from './controllers/CompaniesController'
 
+app.use(express.json())
+
 app.use('/', routes)
 
 app.listen(3000, () => {
