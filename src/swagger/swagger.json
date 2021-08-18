@@ -1,0 +1,203 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Filiais",
+        "description": "Consulta de Filiais",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:{port}",
+            "description": "Local server",
+            "variables": {
+                "port": {
+                    "default": "3333"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/funcionario": {
+            "post": {
+                "summary": "Cadastrar Funcionario",
+                "tags": [
+                    {
+                        "name": "API",
+                        "description": "Funcionarios endpoints"
+                    }
+                ],
+                "security": [],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Success"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "403": {
+                        "description": "Acesso Negado",
+                        "$ref": "#/components/responses/ForbiddenError"
+                    },
+                    "400": {
+                        "description": "Erro de requisição mal formada",
+                        "$ref": "#/components/responses/BadRequestError"
+                    }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/credentials"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "razao_social": {
+                                        "type": "string"
+                                    },
+                                    "cnpj": {
+                                        "type": "number"
+                                    },
+                                    "nome": {
+                                        "type": "string"
+                                    },
+                                    "cpf": {
+                                        "type": "number"
+                                    },
+                                    "salario": {
+                                        "type": "number"
+                                    }
+                                },
+                                "required": [
+                                    "razao_social",
+                                    "cnpj",
+                                    "nome",
+                                    "cpf",
+                                    "salario"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AcessoNegado": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Usuario e/ou senha invalidos"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Success": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Funcionario cadastrado com Sucesso"
+                    }
+                }
+            },
+            "ErroReq": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Cpf já cadastrado"
+                    }
+                }
+            },
+            "ErroInterno": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Erro nao previsto"
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "credentials": {
+                "name": "credenciais",
+                "in": "query",
+                "required": true,
+                "description": "Credencias para Autenticação para o Consumo da API",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "usuario": {
+                            "type": "string"
+                        },
+                        "senha": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "NotFoundError": {
+                "description": "Recurso não encontrado",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "InternalServerError": {
+                "description": "Erro interno no servidor",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErroInterno"
+                        }
+                    }
+                }
+            },
+            "ForbiddenError": {
+                "description": "Acesso Negado",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/AcessoNegado"
+                        }
+                    }
+                }
+            },
+            "BadRequestError": {
+                "description": "Erro de requisição mal formada",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErroReq"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
